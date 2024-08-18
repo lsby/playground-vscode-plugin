@@ -1,6 +1,5 @@
-import { defineConfig } from 'vitest/config'
-
-export default defineConfig({
+/** @type {import('vitest').UserConfig} */
+module.exports = {
   test: {
     coverage: {
       provider: 'v8',
@@ -11,4 +10,4 @@ export default defineConfig({
     },
     include: ['test/**/*.test.ts'],
   },
-})
+}

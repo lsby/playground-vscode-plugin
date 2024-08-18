@@ -1,44 +1,66 @@
 {
-  "name": "playground-ts-lib",
-  "version": "0.0.0",
-  "private": true,
-  "type": "module",
-  "exports": {
-    "require": "./dist/cjs/index.cjs",
-    "import": "./dist/esm/index.js"
-  },
-  "files": [
-    "dist"
+  "name": "playground-vscode-plugin",
+  "displayName": "playground-vscode-plugin",
+  "version": "0.0.1",
+  "description": "",
+  "categories": [
+    "Other"
   ],
+  "main": "./dist/extension.js",
   "scripts": {
-    "build:all": "npm run build:cjs && npm run build:esm",
-    "build:cjs": "tsup src/**/*.ts --format cjs --clean --dts -d dist/cjs",
-    "build:esm": "tsup src/**/*.ts --format esm --clean --dts -d dist/esm",
     "check:all": "npm run check:format && npm run check:lint && npm run check:type",
     "check:format": "prettier --write .",
     "check:lint": "eslint . --fix",
     "check:type": "tsc --noEmit",
     "check:type:watch": "tsc --noEmit -w",
-    "prepare": "husky",
-    "pub:public": "npm run check:all && npm run test:base && npm run build:all && bumpp && npm publish --access public",
-    "test:base": "npm run check:all && vitest run",
-    "test:coverage": "npm run check:all && vitest run --coverage && open-cli ./coverage/index.html"
+    "vscode:prepublish": "pnpm run package",
+    "compile": "pnpm run check-types && pnpm run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "pnpm run check-types && pnpm run lint && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
+    "test": "vscode-test",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src --ext ts"
   },
-  "dependencies": {
-    "vitest": "^2.0.2"
+  "contributes": {
+    "commands": [
+      {
+        "command": "playground-vscode-plugin.helloWorld",
+        "title": "playground-vscode-plugin: Hello World"
+      }
+    ]
   },
+  "activationEvents": [],
+  "dependencies": {},
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.2.1",
     "@lsby/eslint-config": "^0.1.0",
-    "@types/node": "^20.12.10",
+    "@types/mocha": "^10.0.7",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.92.0",
+    "@typescript-eslint/eslint-plugin": "^7.14.1",
+    "@typescript-eslint/parser": "^7.11.0",
     "@vitest/coverage-v8": "^2.0.2",
+    "@vscode/test-cli": "^0.0.9",
+    "@vscode/test-electron": "^2.4.0",
     "bumpp": "^9.4.1",
+    "esbuild": "^0.21.5",
+    "eslint": "^8.57.0",
     "husky": "^9.1.4",
+    "npm-run-all": "^4.1.5",
     "open-cli": "^8.0.0",
     "prettier": "3.2.5",
     "prettier-plugin-packagejson": "^2.5.0",
     "tsup": "^8.0.2",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "vitest": "^2.0.2"
   },
-  "packageManager": "pnpm@9.5.0"
+  "packageManager": "pnpm@9.5.0",
+  "engines": {
+    "vscode": "^1.92.0"
+  }
 }
