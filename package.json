@@ -24,7 +24,8 @@
     "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
     "test": "vscode-test",
     "check-types": "tsc --noEmit",
-    "lint": "eslint src --ext ts"
+    "lint": "eslint src --ext ts",
+    "vsce-pack": "vsce package"
   },
   "contributes": {
     "commands": [
