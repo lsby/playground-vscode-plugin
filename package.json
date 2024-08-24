@@ -6,6 +6,7 @@
   "categories": [
     "Other"
   ],
+  "publisher": "",
   "main": "./dist/extension.js",
   "scripts": {
     "check:all": "npm run check:format && npm run check:lint && npm run check:type",
