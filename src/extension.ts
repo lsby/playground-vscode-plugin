@@ -1,6 +1,6 @@
 import * as vscode from 'vscode'
 
-var 插件名称 = 'playground-vscode-plugin'
+let 插件名称 = 'playground-vscode-plugin'
 
 export function activate(context: vscode.ExtensionContext): void {
   console.log(`${插件名称}: 插件开始运行`)
